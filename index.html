@@ -2528,7 +2528,7 @@ fetch('audio.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(
 let audioEl = null, LAST = [], playing = null;
 function say(...keys) { LAST = keys.filter(Boolean); play(LAST.slice()); }
 function play(keys) { try { if (audioEl) { audioEl.pause(); audioEl = null; } speechSynthesis.cancel(); } catch (e) {}
- const next = () => { if (!keys.length) { setPlaying(false); return; } const k = keys.shift(); const r = REC[k] || AUD[k]; setPlaying(true);
+ const next = () => { if (!keys.length) { setPlaying(false); return; } const k = keys.shift(); const r = AUD[k] || REC[k]; setPlaying(true);
   if (r) { audioEl = new Audio(`data:${r.mime};base64,${r.b64}`); audioEl.onended = next; audioEl.play().catch(next); }
   else { const t = PT[k] || k; try { const u = new SpeechSynthesisUtterance(t); u.lang = 'de-DE'; u.rate = .9; u.onend = next; u.onerror = next; speechSynthesis.speak(u); } catch (e) { next(); } } };
  next(); }
